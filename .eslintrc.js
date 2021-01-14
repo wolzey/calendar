@@ -3,36 +3,35 @@ module.exports = {
 
   env: {
     node: true,
-    mocha: true,
+    mocha: true
   },
 
-  plugins: ["mocha"],
+  plugins: ["mocha", "prettier"],
 
   extends: [
     "plugin:vue/essential",
     "plugin:mocha/recommended",
     "eslint:recommended",
-    "@vue/prettier",
+    "prettier",
+    "prettier/vue",
+    "@vue/prettier"
   ],
 
   parserOptions: {
-    parser: "babel-eslint",
+    parser: "babel-eslint"
   },
 
   rules: {
     "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
   },
 
   overrides: [
     {
-      files: [
-        "**/__tests__/*.{j,t}s?(x)",
-        "**/tests/unit/**/*.spec.{j,t}s?(x)",
-      ],
+      files: ["**/__tests__/*.{j,t}s?(x)", "**/tests/unit/**/*.spec.{j,t}s?(x)"],
       env: {
-        mocha: true,
-      },
-    },
-  ],
+        mocha: true
+      }
+    }
+  ]
 };
