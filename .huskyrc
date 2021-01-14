@@ -1,0 +1,1 @@
+{"hooks":{"pre-commit":"npm run test","commit-msg":"commitlint -e"}}
