@@ -1,15 +1,18 @@
 <template>
-  <div class="w-calendar-container">
-    <div v-for="day of cellHeaders" class="w-cell-header" :key="day">{{ day }}</div>
-    <div v-for="empty of emptyCells" class="w-empty-cell" :key="`empty-${empty}`" />
-    <div
-      v-for="day of totalDays"
-      class="w-date-cell"
-      :class="{ selected: isSelected(day) }"
-      :key="day"
-      @click.stop="cellSelect(day)"
-    >
-      {{ day }}
+  <div class="font-proxima max-w-280">
+    <slot name="currentDate" :date="displayDate" :next="nextMonth" :prev="prevMonth" />
+    <div class="w-calendar-container">
+      <div v-for="day of cellHeaders" class="w-cell-header" :key="day">{{ day }}</div>
+      <div v-for="empty of emptyCells" class="w-empty-cell" :key="`empty-${empty}`" />
+      <div
+        v-for="day of totalDays"
+        class="w-date-cell"
+        :class="{ selected: isSelected(day), disabled: isDisabled(day) }"
+        :key="day"
+        @click.stop="cellSelect(day)"
+      >
+        {{ day }}
+      </div>
     </div>
   </div>
 </template>
@@ -17,15 +20,22 @@
 <script>
 import dateFns from "./methods";
 
-const dayMap = {
-  0: "Su",
-  1: "Mo",
-  2: "Tu",
-  3: "We",
-  4: "Th",
-  5: "Fr",
-  6: "Sa"
-};
+const dayMap = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"];
+
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December"
+];
 
 export default {
   data() {
@@ -36,8 +46,14 @@ export default {
   },
 
   props: {
+    selectionType: {
+      type: String,
+      required: false,
+      default: "single"
+    },
+
     selectedDate: {
-      type: Object,
+      type: Number,
       required: false
     },
 
@@ -46,6 +62,22 @@ export default {
       required: false,
       default() {
         return [];
+      }
+    },
+
+    minDate: {
+      type: Number,
+      required: false,
+      default() {
+        return null;
+      }
+    },
+
+    maxDate: {
+      type: Number,
+      required: false,
+      default() {
+        return null;
       }
     }
   },
@@ -66,15 +98,44 @@ export default {
       }
 
       return days;
+    },
+
+    displayDate() {
+      return {
+        month: months[this.currentDate.getMonth()],
+        year: this.currentDate.getFullYear()
+      };
     }
   },
 
   methods: {
-    cellToString(day) {
-      return new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day).toString();
+    nextMonth() {
+      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
     },
 
-    cellSelect(day) {
+    prevMonth() {
+      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
+    },
+
+    cellToString(day) {
+      return this.convertToDate(day).toString();
+    },
+
+    convertToDate(day) {
+      return new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+    },
+
+    handleDateSelection(day) {
+      if (this.isDisabled(day)) return;
+      const date = this.convertToDate(day);
+
+      this.selectedDates = [date.toString()];
+      this.emitChange(date);
+    },
+
+    handleMultiSelection(day) {
+      if (this.isDisabled(day)) return;
+
       const date = this.cellToString(day);
 
       if (this.selectedDates.includes(date)) {
@@ -83,11 +144,40 @@ export default {
         this.selectedDates.push(date);
       }
 
-      this.$emit("cell-select", date);
+      this.emitChange(date);
+    },
+
+    cellSelect(day) {
+      switch (this.selectionType) {
+        case "single":
+          this.handleDateSelection(day);
+          break;
+        case "multi":
+          this.handleMultiSelection(day);
+          break;
+        case "range":
+          this.handleMultiSelection(day);
+          break;
+        default:
+          throw new Error("invalid selection type");
+      }
+    },
+
+    emitChange(val) {
+      this.$emit("cell-select", val);
     },
 
     isSelected(day) {
       return this.selectedDates.includes(this.cellToString(day));
+    },
+
+    isDisabled(day) {
+      const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+
+      if (this.minDate && date < this.minDate) return true;
+      if (this.maxDate && date > this.maxDate) return true;
+
+      return false;
     }
   }
 };
@@ -108,6 +198,14 @@ $hover: #f6f6f6;
 @font-face {
   font-family: "ProximaReg";
   src: local("ProximaReg"), url(./assets/fonts/ProximaNova-Regular.otf) format("opentype");
+}
+
+.font-proxima {
+  font-family: "ProximaReg";
+}
+
+.max-w-280 {
+  max-width: 305px;
 }
 
 .w-calendar-container {

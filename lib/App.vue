@@ -1,6 +1,14 @@
 <template>
   <div class="cont">
-    <w-calendar />
+    <w-calendar :min-date="minDate" :max-date="maxDate" selection-type="multi">
+      <template #currentDate="{ date, next, prev }">
+        <div class="date-content">
+          <button @click="prev">Prev</button>
+          {{ date.month }} {{ date.year }}
+          <button @click="next">Next</button>
+        </div>
+      </template>
+    </w-calendar>
   </div>
 </template>
 
@@ -10,6 +18,25 @@ import WCalendar from "./Calendar";
 export default {
   components: {
     WCalendar
+  },
+
+  data() {
+    return {
+      minDate: new Date().setDate(new Date().getDate() - 1),
+      maxDate: new Date().setDate(new Date().getDate() + 90)
+    };
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.date-content {
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+</style>
