@@ -228,17 +228,22 @@ $dark-gray: #2e2e2e;
 $hover: #f6f6f6;
 
 @font-face {
-  font-family: "Proxima";
+  font-family: "WProxima";
   src: local("Proxima"), url(./assets/fonts/ProximaNova-Semibold.otf) format("opentype");
+  font-weight: 600;
+  font-style: normal;
 }
 
 @font-face {
-  font-family: "ProximaReg";
-  src: local("ProximaReg"), url(./assets/fonts/ProximaNova-Regular.otf) format("opentype");
+  font-family: "WProxima";
+  src: local("Proxima"), url(./assets/fonts/ProximaNova-Regular.otf) format("opentype");
+  font-weight: normal;
+  font-style: normal;
 }
 
 .font-proxima {
-  font-family: "ProximaReg";
+  font-family: "WProxima";
+  font-weight: normal;
 }
 
 .max-w-280 {
@@ -246,13 +251,14 @@ $hover: #f6f6f6;
 }
 
 .w-calendar-container {
-  font-family: "Proxima";
+  font-family: "WProxima";
   width: 100%;
   display: grid;
   grid-gap: 0.25rem;
   grid-template-columns: repeat(7, 40px);
   grid-auto-rows: auto;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .w-date-cell {
@@ -289,11 +295,12 @@ $hover: #f6f6f6;
 }
 
 .w-cell-header {
-  font-family: "ProximaReg";
+  font-family: "WProxima";
   width: 100%;
   text-align: center;
   font-size: 12px;
   color: #767676;
   line-height: 14px;
+  font-weight: normal;
 }
 </style>
