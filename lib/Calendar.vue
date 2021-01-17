@@ -229,14 +229,14 @@ $hover: #f6f6f6;
 
 @font-face {
   font-family: "WProxima";
-  src: local("Proxima"), url(./assets/fonts/ProximaNova-Semibold.otf) format("opentype");
+  src: url(./assets/fonts/ProximaNova-Semibold.otf) format("opentype");
   font-weight: 600;
   font-style: normal;
 }
 
 @font-face {
   font-family: "WProxima";
-  src: local("Proxima"), url(./assets/fonts/ProximaNova-Regular.otf) format("opentype");
+  src: url(./assets/fonts/ProximaNova-Regular.otf) format("opentype");
   font-weight: normal;
   font-style: normal;
 }
