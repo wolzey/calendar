@@ -273,6 +273,7 @@ $hover: #f6f6f6;
   align-items: center;
   justify-content: center;
   color: $dark-gray;
+  font-weight: normal;
 
   &.selected {
     background-color: $background;
