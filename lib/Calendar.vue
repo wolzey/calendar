@@ -41,7 +41,8 @@ export default {
   data() {
     return {
       currentDate: new Date(),
-      selectedDates: []
+      selectedDates: [],
+      disabledDates: []
     };
   },
 
@@ -53,12 +54,12 @@ export default {
     },
 
     selectedDate: {
-      type: Number,
+      type: Date,
       required: false
     },
 
-    dates: {
-      type: Array,
+    value: {
+      type: [Array, Date],
       required: false,
       default() {
         return [];
@@ -108,7 +109,39 @@ export default {
     }
   },
 
+  mounted() {
+    if (this.selectedDate) {
+      this.currentDate = this.selectedDate;
+    }
+
+    if (this.value) {
+      if (this.selectionType === "single") {
+        this.selectedDates = [this.value.toString()];
+      }
+
+      if (this.selectionType === "multi") {
+        this.selectedDates = this.value.map(val => val.toString());
+      }
+
+      if (this.selectionType === "disable") {
+        this.disabledDates = this.value.map(val => val.toString());
+      }
+    }
+  },
+
   methods: {
+    handleDisableSelection(day) {
+      const date = this.cellToString(day);
+
+      if (this.disabledDates.includes(date)) {
+        this.disabledDates.splice(this.disabledDates.indexOf(date), 1);
+      } else {
+        this.disabledDates.push(date);
+      }
+
+      this.emitChange(date);
+    },
+
     nextMonth() {
       this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
     },
@@ -155,6 +188,9 @@ export default {
         case "multi":
           this.handleMultiSelection(day);
           break;
+        case "disable":
+          this.handleDisableSelection(day);
+          break;
         case "range":
           this.handleMultiSelection(day);
           break;
@@ -172,8 +208,9 @@ export default {
     },
 
     isDisabled(day) {
-      const date = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+      const date = this.convertToDate(day);
 
+      if (this.disabledDates.includes(this.cellToString(day))) return true;
       if (this.minDate && date < this.minDate) return true;
       if (this.maxDate && date > this.maxDate) return true;
 
