@@ -4,8 +4,8 @@
   "private": false,
   "description": "extensible calendar component for Vue",
   "author": "@wolzey",
-  "main": "./lib/WCalendar.common.js",
-  "module": "./lib/WCalendar.umd.min.js",
+  "main": "./dist/WCalendar.common.js",
+  "module": "./dist/WCalendar.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve ./lib/main.js",
     "build": "vue-cli-service build",
