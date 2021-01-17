@@ -67,7 +67,7 @@ export default {
     },
 
     minDate: {
-      type: Number,
+      type: Date,
       required: false,
       default() {
         return null;
@@ -75,7 +75,7 @@ export default {
     },
 
     maxDate: {
-      type: Number,
+      type: Date,
       required: false,
       default() {
         return null;
