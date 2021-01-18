@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Getting Started | WCalendar</title>
+    <meta name="generator" content="VuePress 1.8.0">
+    
+    <meta name="description" content="A flexible calendar component for VueJS applications">
+    
+    <link rel="preload" href="/assets/css/0.styles.fab77d47.css" as="style"><link rel="preload" href="/assets/js/app.74eefb5a.js" as="script"><link rel="preload" href="/assets/js/2.604e5414.js" as="script"><link rel="preload" href="/assets/js/8.5ffebfc4.js" as="script"><link rel="prefetch" href="/assets/js/10.c7e94df8.js"><link rel="prefetch" href="/assets/js/3.2f5fbdc5.js"><link rel="prefetch" href="/assets/js/4.0cab5cbe.js"><link rel="prefetch" href="/assets/js/5.6a6cc79b.js"><link rel="prefetch" href="/assets/js/6.84bd4fb6.js"><link rel="prefetch" href="/assets/js/7.94519271.js"><link rel="prefetch" href="/assets/js/9.283fb9d7.js">
+    <link rel="stylesheet" href="/assets/css/0.styles.fab77d47.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/" class="home-link router-link-active"><!----> <span class="site-name">WCalendar</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><a href="/introduction.html" class="sidebar-link">Introduction</a></li><li><a href="/getting-started.html" aria-current="page" class="active sidebar-link">Getting Started</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/getting-started.html#installation" class="sidebar-link">Installation</a></li><li class="sidebar-sub-header"><a href="/getting-started.html#using-overwriting-styles" class="sidebar-link">Using / Overwriting Styles</a></li><li class="sidebar-sub-header"><a href="/getting-started.html#example-usage" class="sidebar-link">Example Usage</a></li></ul></li><li><a href="/props.html" class="sidebar-link">Props</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h1 id="getting-started"><a href="#getting-started" class="header-anchor">#</a> Getting Started</h1> <h2 id="installation"><a href="#installation" class="header-anchor">#</a> Installation</h2> <p>You can install the calendar using <code>npm</code> or <code>yarm</code></p> <div class="language-bash extra-class"><pre class="language-bash"><code><span class="token function">yarn</span> <span class="token function">add</span> @wolzey/calendar
+
+<span class="token comment"># OR</span>
+
+<span class="token function">npm</span> i @wolzey/calendar
+</code></pre></div><h2 id="using-overwriting-styles"><a href="#using-overwriting-styles" class="header-anchor">#</a> Using / Overwriting Styles</h2> <p>To use the default styles you need to import the default styles</p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token keyword">import</span> <span class="token string">&quot;@wolzey/calendar/dist/WCalendar.css&quot;</span><span class="token punctuation">;</span>
+</code></pre></div><p>or if you are using Nuxt you can import using the <code>css</code> property in <code>nuxt.config.js</code></p> <div class="language-javascript extra-class"><pre class="language-javascript"><code><span class="token punctuation">{</span>
+  css<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'@wolzey/calendar/dist/WCalendar.css'</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>or write your own with the following class names</p> <div class="language-css extra-class"><pre class="language-css"><code><span class="token selector">.w-cell-header</span> <span class="token punctuation">{</span>
+  <span class="token comment">/* your header styles */</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.w-date-cell</span> <span class="token punctuation">{</span>
+  <span class="token comment">/* your cell styles */</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.w-calendar-container</span> <span class="token punctuation">{</span>
+  <span class="token comment">/* your layout styles */</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h2 id="example-usage"><a href="#example-usage" class="header-anchor">#</a> Example Usage</h2> <p>in this example we use the scoped slot to bring in the date to show the current month on top of the calendar. We also can bring in some helper functions to go to the next or previous month. You can also implement these yourself if you do not want them above the calendar.</p> <div class="language-html extra-class"><pre class="language-html"><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>w-calendar</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">#currentDate</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>{ date, next, prev }<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>date-content<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>prev<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>Prev<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+      {{ date.month }} {{ date.year }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>next<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>Next<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>w-calendar</span><span class="token punctuation">&gt;</span></span>
+</code></pre></div></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/introduction.html" class="prev">
+        Introduction
+      </a></span> <span class="next"><a href="/props.html">
+        Props
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/assets/js/app.74eefb5a.js" defer></script><script src="/assets/js/2.604e5414.js" defer></script><script src="/assets/js/8.5ffebfc4.js" defer></script>
+  </body>
+</html>
