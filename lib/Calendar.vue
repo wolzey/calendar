@@ -139,7 +139,7 @@ export default {
         this.disabledDates.push(date);
       }
 
-      this.emitChange(date);
+      this.emitChange(this.disabledDates);
     },
 
     nextMonth() {
@@ -177,7 +177,7 @@ export default {
         this.selectedDates.push(date);
       }
 
-      this.emitChange(date);
+      this.emitChange(this.selectedDates);
     },
 
     cellSelect(day) {
