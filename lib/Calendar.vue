@@ -1,5 +1,5 @@
 <template>
-  <div class="font-proxima max-w-280">
+  <div class="font-proxima">
     <slot name="currentDate" :date="displayDate" :next="nextMonth" :prev="prevMonth" />
     <div class="w-calendar-container">
       <div v-for="day of cellHeaders" class="w-cell-header" :key="day">{{ day }}</div>
@@ -220,7 +220,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 $background: #26a0a9;
 $light-gray: #e4e4e4;
 $light-gray-1: #767676;
@@ -246,24 +246,18 @@ $hover: #f6f6f6;
   font-weight: normal;
 }
 
-.max-w-280 {
-  max-width: 305px;
-}
-
 .w-calendar-container {
   font-family: "WProxima";
   width: 100%;
   display: grid;
-  grid-gap: 0.25rem;
-  grid-template-columns: repeat(7, 40px);
+  grid-gap: 3px;
+  grid-template-columns: repeat(7, minmax(48px, 70px));
   grid-auto-rows: auto;
   font-size: 14px;
   font-weight: 600;
 }
 
 .w-date-cell {
-  width: 38px;
-  height: 38px;
   cursor: pointer;
   background: white;
   border-radius: 3px;
@@ -274,6 +268,12 @@ $hover: #f6f6f6;
   justify-content: center;
   color: $dark-gray;
   font-weight: normal;
+
+  &::before {
+    content: "";
+    display: flex;
+    padding-top: 100%;
+  }
 
   &.selected {
     background-color: $background;
