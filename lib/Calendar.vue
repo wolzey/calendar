@@ -109,27 +109,37 @@ export default {
     }
   },
 
+  watch: {
+    value(newVal) {
+      this.handleValueChange(newVal);
+    }
+  },
+
   mounted() {
     if (this.selectedDate) {
       this.currentDate = this.selectedDate;
     }
 
     if (this.value) {
-      if (this.selectionType === "single") {
-        this.selectedDates = [this.value.toString()];
-      }
-
-      if (this.selectionType === "multi") {
-        this.selectedDates = this.value.map(val => val.toString());
-      }
-
-      if (this.selectionType === "disable") {
-        this.disabledDates = this.value.map(val => val.toString());
-      }
+      this.handleValueChange(this.value);
     }
   },
 
   methods: {
+    handleValueChange(val) {
+      if (this.selectionType === "single") {
+        this.selectedDates = [val.toString()];
+      }
+
+      if (this.selectionType === "multi") {
+        this.selectedDates = val.map(val => val.toString());
+      }
+
+      if (this.selectionType === "disable") {
+        this.disabledDates = val.map(val => val.toString());
+      }
+    },
+
     handleDisableSelection(day) {
       const date = this.cellToString(day);
 
