@@ -67,7 +67,7 @@ export default {
     },
 
     minDate: {
-      type: Date,
+      type: [Number, Date],
       required: false,
       default() {
         return null;
@@ -75,7 +75,7 @@ export default {
     },
 
     maxDate: {
-      type: Date,
+      type: [Number, Date],
       required: false,
       default() {
         return null;
@@ -251,7 +251,12 @@ $hover: #f6f6f6;
   width: 100%;
   display: grid;
   grid-gap: 3px;
-  grid-template-columns: repeat(7, minmax(48px, 70px));
+  grid-template-columns: repeat(7, minmax(30px, 48px));
+
+  @media only screen and (min-width: 760px) {
+    grid-template-columns: repeat(7, minmax(48px, 70px));
+  }
+
   grid-auto-rows: auto;
   font-size: 14px;
   font-weight: 600;

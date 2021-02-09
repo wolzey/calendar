@@ -1,5 +1,5 @@
 <template>
-  <div class="cont">
+  <div class="container">
     <w-calendar :min-date="minDate" :max-date="maxDate" selection-type="disable">
       <template #currentDate="{ date, next, prev }">
         <div class="date-content">
@@ -31,6 +31,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.container {
+  padding: 1rem;
+}
+
 .date-content {
   margin: 0 auto;
   text-align: center;
