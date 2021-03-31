@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <w-calendar :min-date="minDate" :max-date="maxDate" :value="[new Date()]">
+    <w-calendar :min-date="minDate" selection-type="disable" :max-date="maxDate" :value="[new Date()]">
       <template #currentDate="{ date, next, prev }">
         <div class="date-content">
           <button @click="prev">Prev</button>

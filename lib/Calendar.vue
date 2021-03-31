@@ -37,6 +37,14 @@ const months = [
   "December"
 ];
 
+function mapToDateString(val) {
+  if (val instanceof Date) {
+    return val.toDateString();
+  } else {
+    return val;
+  }
+}
+
 export default {
   data() {
     return {
@@ -136,11 +144,11 @@ export default {
       }
 
       if (this.selectionType === "multi") {
-        this.selectedDates = val.map(val => val.toDateString());
+        this.selectedDates = val.map(mapToDateString);
       }
 
       if (this.selectionType === "disable") {
-        this.disabledDates = val.map(val => val.toDateString());
+        this.disabledDates = val.map(mapToDateString);
       }
     },
 
