@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <w-calendar :min-date="minDate" :max-date="maxDate" selection-type="disable">
+    <w-calendar :min-date="minDate" :max-date="maxDate" :value="[new Date()]">
       <template #currentDate="{ date, next, prev }">
         <div class="date-content">
           <button @click="prev">Prev</button>
@@ -24,7 +24,8 @@ export default {
     return {
       minDate: new Date().setDate(new Date().getDate() - 1),
       maxDate: new Date().setDate(new Date().getDate() + 90),
-      selectedDate: new Date(2018, 0, 21)
+      selectedDate: new Date(2018, 0, 21),
+      value: [new Date()]
     };
   }
 };

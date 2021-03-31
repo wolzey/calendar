@@ -127,16 +127,16 @@ export default {
 
   methods: {
     handleValueChange(val) {
-      if (this.selectionType === "single") {
-        this.selectedDates = [val.toString()];
+      if (this.selectionType === "single" && val instanceof Date) {
+        this.selectedDates = [val.toDateString()];
       }
 
       if (this.selectionType === "multi") {
-        this.selectedDates = val.map(val => val.toString());
+        this.selectedDates = val.map(val => val.toDateString());
       }
 
       if (this.selectionType === "disable") {
-        this.disabledDates = val.map(val => val.toString());
+        this.disabledDates = val.map(val => val.toDateString());
       }
     },
 
@@ -161,7 +161,7 @@ export default {
     },
 
     cellToString(day) {
-      return this.convertToDate(day).toString();
+      return this.convertToDate(day).toDateString();
     },
 
     convertToDate(day) {
@@ -172,7 +172,7 @@ export default {
       if (this.isDisabled(day)) return;
       const date = this.convertToDate(day);
 
-      this.selectedDates = [date.toString()];
+      this.selectedDates = [date.toDateString()];
       this.emitChange(date);
     },
 
