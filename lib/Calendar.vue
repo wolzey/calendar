@@ -127,8 +127,12 @@ export default {
 
   methods: {
     handleValueChange(val) {
-      if (this.selectionType === "single" && val instanceof Date) {
-        this.selectedDates = [val.toDateString()];
+      if (this.selectionType === "single") {
+        if (val instanceof Date) {
+          this.selectedDates = [val.toDateString()];
+        } else {
+          this.selectedDates = [new Date(val).toDateString()];
+        }
       }
 
       if (this.selectionType === "multi") {
