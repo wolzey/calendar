@@ -273,10 +273,10 @@ $hover: #f6f6f6;
   width: 100%;
   display: grid;
   grid-gap: 3px;
-  grid-template-columns: repeat(7, minmax(30px, 48px));
+  grid-template-columns: repeat(7, minmax(30px, auto));
 
   @media only screen and (min-width: 760px) {
-    grid-template-columns: repeat(7, minmax(48px, 70px));
+    grid-template-columns: repeat(7, minmax(48px, auto));
   }
 
   grid-auto-rows: auto;
