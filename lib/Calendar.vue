@@ -1,5 +1,5 @@
 <template>
-  <div class="font-proxima">
+  <div class="font-proxima w-full">
     <slot name="currentDate" :date="displayDate" :next="nextMonth" :prev="prevMonth" />
     <div class="w-calendar-container">
       <div v-for="day of cellHeaders" class="w-cell-header" :key="day">{{ day }}</div>
@@ -248,6 +248,10 @@ $light-gray: #e4e4e4;
 $light-gray-1: #767676;
 $dark-gray: #2e2e2e;
 $hover: #f6f6f6;
+
+.w-full {
+  width: 100%;
+}
 
 @font-face {
   font-family: "WProxima";
