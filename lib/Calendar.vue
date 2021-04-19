@@ -120,6 +120,10 @@ export default {
   watch: {
     value(newVal) {
       this.handleValueChange(newVal);
+    },
+
+    selectedDate(newVal) {
+      this.currentDate = newVal;
     }
   },
 
