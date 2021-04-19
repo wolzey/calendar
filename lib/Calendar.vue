@@ -275,11 +275,6 @@ $hover: #f6f6f6;
   grid-gap: 3px;
   grid-template-columns: repeat(7, minmax(30px, auto));
 
-  @media only screen and (min-width: 760px) {
-    grid-template-columns: repeat(7, minmax(48px, auto));
-  }
-
-  grid-auto-rows: auto;
   font-size: 14px;
   font-weight: 600;
 }
