@@ -7,7 +7,7 @@
       <div
         v-for="day of totalDays"
         class="w-date-cell"
-        :class="{ selected: isSelected(day), disabled: isDisabled(day) }"
+        :class="{ selected: isSelected(day), disabled: isDisabled(day), 'in-range': isInRange(day) }"
         :key="day"
         @click.stop="cellSelect(day)"
       >
@@ -37,37 +37,32 @@ const months = [
   "December"
 ];
 
-function mapToDateString(val) {
-  if (val instanceof Date) {
-    return val.toDateString();
-  } else {
-    return val;
-  }
-}
-
 export default {
-  data() {
-    return {
-      currentDate: new Date(),
-      selectedDates: [],
-      disabledDates: []
-    };
-  },
-
   props: {
-    selectionType: {
-      type: String,
+    disabledDates: {
+      type: Array,
       required: false,
-      default: "single"
+      default() {
+        return [];
+      }
+    },
+
+    isRange: {
+      type: Boolean,
+      required: false,
+      default: false
     },
 
     selectedDate: {
       type: Date,
-      required: false
+      required: false,
+      default() {
+        return new Date();
+      }
     },
 
     value: {
-      type: [Array, Date],
+      type: [Array, Date, Object, Number],
       required: false,
       default() {
         return [];
@@ -92,12 +87,28 @@ export default {
   },
 
   computed: {
+    valueIsRange() {
+      return this.value && typeof this.value === "object";
+    },
+
+    compareableStartDate() {
+      if (!this.valueIsRange) return;
+
+      return this.value.start ? this.convertToComparable(this.value.start) : undefined;
+    },
+
+    compareableEndDate() {
+      if (!this.valueIsRange) return;
+
+      return this.value.end ? this.convertToComparable(this.value.end) : undefined;
+    },
+
     totalDays() {
-      return dateFns.daysInMonth(this.currentDate.getFullYear(), this.currentDate.getMonth());
+      return dateFns.daysInMonth(this.selectedDate.getFullYear(), this.selectedDate.getMonth());
     },
 
     emptyCells() {
-      return dateFns.startingDayInWeek(this.currentDate.getFullYear(), this.currentDate.getMonth());
+      return dateFns.startingDayInWeek(this.selectedDate.getFullYear(), this.selectedDate.getMonth());
     },
 
     cellHeaders() {
@@ -111,69 +122,37 @@ export default {
 
     displayDate() {
       return {
-        month: months[this.currentDate.getMonth()],
-        year: this.currentDate.getFullYear()
+        month: months[this.selectedDate.getMonth()],
+        year: this.selectedDate.getFullYear()
       };
     }
   },
 
-  watch: {
-    value(newVal) {
-      this.handleValueChange(newVal);
-    },
-
-    selectedDate(newVal) {
-      this.currentDate = newVal;
-    }
-  },
-
-  mounted() {
-    if (this.selectedDate) {
-      this.currentDate = this.selectedDate;
-    }
-
-    if (this.value) {
-      this.handleValueChange(this.value);
-    }
-  },
-
   methods: {
-    handleValueChange(val) {
-      if (this.selectionType === "single") {
-        if (val instanceof Date) {
-          this.selectedDates = [val.toDateString()];
-        } else {
-          this.selectedDates = [new Date(val).toDateString()];
-        }
-      }
-
-      if (this.selectionType === "multi") {
-        this.selectedDates = val.map(mapToDateString);
-      }
-
-      if (this.selectionType === "disable") {
-        this.disabledDates = val.map(mapToDateString);
+    handleRangeValue(val) {
+      if (val.start && val.end) {
+        this.selectedDates = [val.start.toDateString(), val.end.toDateString()];
       }
     },
 
-    handleDisableSelection(day) {
-      const date = this.cellToString(day);
+    convertToComparable(date) {
+      return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    },
 
-      if (this.disabledDates.includes(date)) {
-        this.disabledDates.splice(this.disabledDates.indexOf(date), 1);
-      } else {
-        this.disabledDates.push(date);
-      }
+    isInRange(date) {
+      if (!this.value.start || !this.value.end) return false;
 
-      this.emitChange(this.disabledDates);
+      const converted = this.convertToComparable(this.convertToDate(date));
+
+      return converted > this.compareableStartDate && converted < this.compareableEndDate;
     },
 
     nextMonth() {
-      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() + 1);
+      this.$emit("next-month", new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth() + 1));
     },
 
     prevMonth() {
-      this.currentDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth() - 1);
+      this.$emit("prev-month", new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth() - 1));
     },
 
     cellToString(day) {
@@ -181,62 +160,34 @@ export default {
     },
 
     convertToDate(day) {
-      return new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
-    },
-
-    handleDateSelection(day) {
-      if (this.isDisabled(day)) return;
-      const date = this.convertToDate(day);
-
-      this.selectedDates = [date.toDateString()];
-      this.emitChange(date);
-    },
-
-    handleMultiSelection(day) {
-      if (this.isDisabled(day)) return;
-
-      const date = this.cellToString(day);
-
-      if (this.selectedDates.includes(date)) {
-        this.selectedDates.splice(this.selectedDates.indexOf(date), 1);
-      } else {
-        this.selectedDates.push(date);
-      }
-
-      this.emitChange(this.selectedDates);
+      return new Date(this.selectedDate.getFullYear(), this.selectedDate.getMonth(), day);
     },
 
     cellSelect(day) {
-      switch (this.selectionType) {
-        case "single":
-          this.handleDateSelection(day);
-          break;
-        case "multi":
-          this.handleMultiSelection(day);
-          break;
-        case "disable":
-          this.handleDisableSelection(day);
-          break;
-        case "range":
-          this.handleMultiSelection(day);
-          break;
-        default:
-          throw new Error("invalid selection type");
-      }
-    },
-
-    emitChange(val) {
-      this.$emit("cell-select", val);
+      this.$emit("cell-select", this.convertToComparable(this.convertToDate(day)));
     },
 
     isSelected(day) {
-      return this.selectedDates.includes(this.cellToString(day));
+      const date = this.cellToString(day);
+
+      if (this.value && typeof this.value === "object") {
+        if (this.value.start && this.value.start.toDateString() === date) return true;
+        if (this.value.end && this.value.end.toDateString() === date) return true;
+
+        return false;
+      }
+
+      return this.value.includes(this.cellToString(day));
+    },
+
+    hasDate(arr, date) {
+      return arr.find(v => this.convertToComparable(v).getTime() === this.convertToComparable(date).getTime());
     },
 
     isDisabled(day) {
       const date = this.convertToDate(day);
 
-      if (this.disabledDates.includes(this.cellToString(day))) return true;
+      if (this.hasDate(this.disabledDates, date)) return true;
       if (this.minDate && date < this.minDate) return true;
       if (this.maxDate && date > this.maxDate) return true;
 
@@ -248,6 +199,7 @@ export default {
 
 <style lang="scss">
 $background: #26a0a9;
+$background-range: #93d0d4;
 $light-gray: #e4e4e4;
 $light-gray-1: #767676;
 $dark-gray: #2e2e2e;
@@ -307,6 +259,16 @@ $hover: #f6f6f6;
 
   &.selected {
     background-color: $background;
+    color: white;
+
+    &:hover {
+      background-color: $background;
+      opacity: 0.75;
+    }
+  }
+
+  &.in-range {
+    background-color: $background-range;
     color: white;
 
     &:hover {
